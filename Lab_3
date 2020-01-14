@@ -1,0 +1,122 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace lab3
+{
+    class Lab3
+    {
+        static void Task1()
+        {
+            int sum = 0;
+            int num = 30;
+
+            for (int i = 1; i <= num; i++)
+            {
+                if (i % 5 == 0)
+                {
+                    sum += i;
+
+                }
+            }
+            Console.WriteLine(sum);
+        }
+        static void Task2()
+        {
+            double x0 = 0;
+            double xn = 3;
+            double deltax = 0.1;
+            double a = -0.5;
+            double xi;
+            double y = 0;
+            double e = 2.71;
+            int counter = 0;
+
+            Console.WriteLine("Xi" + "\t" + "Vetv" + "\t" + "S(x)");
+
+            for (double i = 0; i < xn; i += 0.1)
+            {
+
+                xi = x0 + i * deltax;
+                if (1 <= xi && xi <= 2)
+                {
+                    y = a * Math.Pow(xi, 2) * Math.Log(xi);
+                }
+                if (xi < 1)
+                {
+                    y = Math.Cos(2 * xi);
+                }
+                if (xi > 2)
+                {
+                    y = Math.Pow(e, a * xi) * Math.Cos(2 * xi);
+                }
+
+                Console.WriteLine(xi + "\t" + counter + "\t" + y);
+                counter++;
+            }
+        }
+
+        public static void Task3(double num)
+        {
+            double res = 0;
+            
+            for (int i = 1; i <= num; i++)
+            {
+                if (i % 5 == 0)
+                    res++;
+            }
+            Console.WriteLine (res);
+        }
+
+        static void Task4()
+        {
+            for (int n = 100; n < 999; n++)
+            {
+                String s = n.ToString();
+                if (s[0] != s[1] && s[1] != s[2] && s[0] != s[2])
+                    Console.Write(s + " ");
+            }
+        }
+        static double facktorial(double a)
+        {
+            double res = 1;
+            for (int i = 1; i <= a; i++)
+                res *= i;
+            return res;
+        }
+
+        public static void Task5()
+        {
+            double x = Convert.ToDouble(Console.ReadLine());
+            int rang = Convert.ToInt32(Console.ReadLine());
+            double res = 0;
+
+            int i = 1;
+            for (; i < rang; i++)
+            {
+                res += Math.Pow(-1, i) * Math.Pow(x, 2) / facktorial(i + 2) * (i + 1);
+            }
+
+            Console.WriteLine(i + " " + Math.Round(res, 6));
+        }
+        public static void Task6()
+        {
+            string num = Console.ReadLine();
+            int k = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine(num[k - 1]);
+        }
+        static void Main(string[] args)
+        {
+            //Task1();
+            //Task2();
+            //Task3(20);
+            //Task4();
+            //Task5();
+            Task6();
+
+            Console.ReadKey();
+        }
+    }
+}
