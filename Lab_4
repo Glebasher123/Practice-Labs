@@ -1,0 +1,219 @@
+using System;
+using System.Collections.Generic;
+
+namespace lab4
+{
+    class Program
+    {
+        static void Task1()
+        {
+
+            int[] A = new int[] { 1, 124, 23, 8, 14, -4, 2, 5 };
+            int[] B = new int[] { 432, 4, 0, 65, 41, 9, 234, 632 };
+            var C = new int[A.Length];
+            int i = 0;
+
+            foreach (int fVar in A)
+            {
+                C[i] = A[i] - B[i];
+                ++i;
+            }
+
+            Array.Sort(C);
+            Array.ForEach(C, Console.WriteLine);
+
+        }
+
+        static void Task2()
+        {
+            int[] a = new int[] { 1, 4, 6, 15, 54, 125 };
+            int min = a[0];
+            int max = a[0];
+            int minindex = 0;
+            int maxindex = 0;
+
+            for (int i = 1; i < a.Length; ++i)
+            {
+                if (max < a[i])
+                {
+                    max = a[i];
+                    maxindex = i;
+                }
+
+                if (min > a[i])
+                {
+                    min = a[i];
+                    minindex = i;
+                }
+            }
+
+            Console.WriteLine($"{min}  {max}");
+            int l = 0;
+            foreach (int gr in a)
+            {
+                if (l == min)
+                {
+
+                    for (int j = maxindex - 1; j > minindex; --j)
+                    {
+                        Console.Write(a[j] + " ");
+                        ++l;
+                    }
+                    
+                }
+                if (l == 6)
+                {
+                    break;
+                }
+
+                Console.Write(a[l] + " ");
+                ++l;
+                
+            }
+        }
+
+        static void Task3()
+        {
+
+            int[] array = new int[] { 6, 5, 4, 15, 2};
+
+            foreach (int gr in array)
+                Console.Write(gr + " ");
+            Console.WriteLine();
+
+            bool isInc = false;   
+            int index = 0;
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                if (array[i] > array[i + 1])
+                {
+                    isInc = true;   
+                    
+                }
+                else
+                {
+                    isInc = false;
+                    index = (i + 1);
+                    break;
+                }
+            }
+            if (isInc == true)
+                Console.WriteLine("0");
+            else
+                Console.WriteLine("Порядковый номер элемента, нарушающего закономерность - " + index);
+        }
+
+        static int sizearray ()
+        {
+            Random rand = new Random();
+            int value = rand.Next(5,10);
+            return value;
+        }
+        static void Task4 ()
+        {
+            int[] array = new int[sizearray()];
+            Random rand = new Random();
+            int j = 0;
+            foreach (int gra in array)
+            {
+                array[j] = rand.Next(-100, 100);
+                j++;
+            }
+
+            for (int i = 0; i < array.Length; i++)
+                Console.Write(array[i] + " ");
+            Console.WriteLine();
+
+            bool ok = true;
+
+            for (int i = 1; i < array.Length; i++)
+            {
+                if (-Math.Sign(array[i]) != Math.Sign(array[i - 1]))
+                {
+                    ok = false;
+                    Console.WriteLine($"Закономерность нарушается - {i}");
+                    break;
+                }
+            }
+
+            if (ok == true)
+                Console.WriteLine(0);
+        }
+
+        static void Task5 ()
+        {
+            int[] N = new int[9] { 1, 4, 8, 2, 3, 4, 9, 9, 5};
+            int[] B = new int[(N.Length / 2)];
+            int t = 0;
+            Console.Write("Новый массив: ");
+
+            for (int i = 0; i < N.Length - 1; i += 2)
+            {
+                B[t] = N[i];
+                Console.Write(B[t] + " ");
+                t++;
+            }
+            Console.WriteLine();
+
+            Console.WriteLine($"Размер нового массива: {B.Length}");
+        }
+
+        static void Task6 ()
+        {
+            Console.Write("Введите размер массива: ");
+            int m = Convert.ToInt32(Console.ReadLine());
+            Random rnd = new Random();
+
+            int[] arr = new int[m];
+            int min = 100, max = 0, maxindex = 0, minindex = 0;
+            for (int i = 0; i < m; i++)
+            {
+                arr[i] = rnd.Next(-100, 100);
+                Console.Write(arr[i] + " ");
+                if (max < arr[i])
+                {
+                    max = arr[i];
+                    maxindex = i;
+                }
+                if (min > arr[i])
+                {
+                    min = arr[i];
+                    minindex = i;
+                }
+            }
+            Console.WriteLine($"\n\nMin элемент: {min}");
+            Console.WriteLine($"Max элемент: {max}");
+            if (maxindex > minindex)
+            {
+                for (int i = minindex + 1; i < maxindex; i++)
+                {
+                    arr[i] = 0;
+                }
+            }
+            if (maxindex < minindex)
+            {
+                for (int i = maxindex + 1; i < minindex; i++)
+                {
+                    arr[i] = 0;
+                }
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                Console.Write(arr[i] + " ");
+            }
+        }
+        static void Main(string[] args)
+        {
+            //Task1();
+            //Task2();
+            //Task3();
+            //Task4();
+            //Task5();
+            Task6();
+
+
+            Console.ReadKey();
+        }
+    }
+}
