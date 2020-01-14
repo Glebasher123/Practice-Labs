@@ -1,0 +1,172 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace lab2
+{
+    class Program
+    {
+        static void Task1 ()
+        {
+            Console.Write("Введите первое число - ");
+            int a = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Введите второе число - ");
+            int b = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Введите третье число - ");
+            int c = Convert.ToInt32(Console.ReadLine());
+
+            int temp = 0;
+            int neg = 0;
+            
+
+            if (a > 0)
+            {
+                ++temp;
+            }
+            if (a < 0)
+            {
+                ++neg;
+            }
+            if (b > 0)
+            {
+                ++temp;
+            }
+            if (b < 0)
+            {
+                ++neg;
+            }
+           if (c > 0)
+            {
+                ++temp;
+            }
+            if (c < 0)
+            {
+                ++neg;
+            }
+
+
+            Console.WriteLine("Количество положительных чисел - " + temp);
+            Console.WriteLine("оличество отрицательных чисел - " + (neg));
+        }
+
+        static void Task2 ()
+        {
+            Console.WriteLine("Выберите мороженное: \n 1. 29 копеек \n 2. Каприз \n 3. Аленка \n 4. Каштан \n 5. Солетто");
+            string selection = Console.ReadLine();
+            switch (selection)
+            {
+                case "1":
+                    Console.WriteLine("Мороженное 29 копеек за 1000 грамм стоит - " + (Convert.ToDouble(1000 / 70) * 0.89));
+                    break;
+                case "2":
+                    Console.WriteLine("Мороженное Каприз за 1000 грамм стоит - " + (Convert.ToDouble(1000 / 95) * 1.09));
+                    break;
+                case "3":
+                    Console.WriteLine("Мороженное Аленка за 1000 грамм стоит - " + (Convert.ToDouble(1000 / 65) * 0.95));
+                    break;
+                case "4":
+                    Console.WriteLine("Мороженное Каштан за 1000 грамм стоит - " + (Convert.ToDouble(1000 / 80) * 1.19));
+                    break;
+                case "5":
+                    Console.WriteLine("Мороженное Солетто за 1000 грамм стоит - " + (Convert.ToDouble(1000 / 75) * 1.25));
+                    break;
+                default:
+                    Console.WriteLine("Вы нажали несуществующий вариант");
+                    break;
+            }
+        }
+        static double Task3(int x, int y)
+        {
+            double e = 2.71;
+            double f = 0;
+            Console.WriteLine("Вид функции f(x) f(x): \n 1 - sh(x) \n 2 - x^2 \n 3 - ex. ");
+            string selection = Console.ReadLine();
+            switch (selection)
+            {
+                case "1":
+                    {
+                        f = Math.Sinh(x);
+                        break;
+                    }
+                case "2":
+                    {
+                        f = Math.Pow(x, 2);
+                        break;
+                    }
+                case "3":
+                    {
+                        f = Math.Pow(e, x);
+                        break;
+                    }
+
+            }
+
+            if (x > y)
+            {
+                return y * Math.Sqrt((f) + 3*Math.Sin(x));
+            }
+            else
+            {
+                if (x < y)
+                {
+                    return x*Math.Sqrt(Math.Abs(f));
+                }
+                else
+                {
+                    return Math.Pow(Math.Abs(f),1/3);
+                }
+            }
+        }
+
+        static double Task4 (int x, int r)
+        {
+            double y = 0;
+            if ((-9 <= x && (x <= -6)))
+            {
+                y = Math.Sqrt(Math.Pow(r, 2) - Math.Pow((x + 6), 2));
+            }
+            else if ((x < -6) && (x>=-3))
+            {
+                 y = x + r;
+            }
+            else if ((-3 <= x && (x <= 0)))
+            {
+                y = Math.Sqrt(Math.Pow(r, 2) - Math.Pow((x), 2));
+            }
+            else if ((0 <= x) && ( x < 3)) 
+            {
+                y = x + r;
+            }
+            else if ((3 <= x) && (x <= 9))
+            {
+                y = (0.5 * x - 1.5);
+            }
+            return y;
+        }
+
+        static void Main(string[] args)
+        {
+            //Task1();
+            //Task2();
+
+            Console.WriteLine("Число X? ");
+            string l1 = Console.ReadLine();
+            Console.WriteLine("Число Y? ");
+            string l2 = Console.ReadLine();
+            Console.WriteLine("Z = " + Program.Task3(Convert.ToInt32(l1), Convert.ToInt32(l2)));
+
+
+            //Console.WriteLine("Число X? ");
+            //string k1 = Console.ReadLine();
+            //Console.WriteLine("Радиус R? ");
+            //string k2 = Console.ReadLine();
+            //Console.WriteLine("Y = " + Program.Task4(Convert.ToInt32(k1), Convert.ToInt32(k2)));
+
+            Console.ReadKey();
+        }
+    }
+}
