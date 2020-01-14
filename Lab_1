@@ -1,0 +1,188 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace laba1
+{
+    class Program
+    {
+        static void task1()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Нет ничего удивительного, что из подобных дебатов родились и материалы для публикаций, попавшие в форме писем в газету \"Эркхем Эдвертайзер\"; некоторые из них перепечатывали газеты, издававшиеся в тех районах Вермонта, откуда пришли загадочные истории о наводнении. Так, \"Ратлэнд Геральд\" уделила половину страницы выдержкам из этих писем, а \"Брэттлборо Реформер\" полностью перепечатала один из моих обширных исторических и мифологических комментариев, сопроводив их собственными суждениями в колонке \"Свободное Перо\", где выразила восхищение моими скептическими умозаключениями и полностью их поддержала.К весне 1928 года я стал широко известной фигурой в Вермонте, хотя ни разу не бывал в этом штате.И вот тут - то получил я письма от Генри Эйкели, которые произвели на меня столь сильное впечатление, что раз и навсегда приковали мое внимание к пленительному краю теснящихся зеленых склонов и журчащих лесных ручьев");
+            Console.ReadKey();
+        }
+        static void task2(int a, int b, int c)
+        {
+            double v, s;
+
+            if (a < 0 || b < 0 || c < 0)
+            {
+                Console.WriteLine("Ошибка!");
+            }
+            else
+            {
+                Console.WriteLine(($"Площадь - {v = a * b * c}"));
+                Console.WriteLine($"Площадь основания - {s = 2 * (a * b + b * c + a * c)}");
+            }
+            Console.ReadKey();
+            
+        }
+
+        public static int sum(int a)
+        {
+            int sum = 0;
+            for (; a != 0; a /= 10)
+            {
+                sum += a % 10;
+            }
+            return sum;
+        }
+        public static int mul(int a)
+        {
+            int mul = 1;
+            for (; a != 0; a /= 10)
+            {
+                mul *= a % 10;
+            }
+            return mul;
+        }
+        static void task3 ()
+        {
+            int a = 1234;
+            char[] arr = Convert.ToString(a).ToCharArray();
+            Array.Reverse(arr);
+            string newstr = new string(arr);
+            a = Convert.ToInt32(newstr);
+            Console.WriteLine(a);
+            Console.WriteLine(mul(a));
+            Console.WriteLine(sum(a));
+            Console.ReadKey();
+
+        }
+        static void task4 ()
+        {
+            int glina = 25;
+            int pesok = 12;
+            int gips = 6;
+ 
+            Console.Write("Введите К -");
+            string k = Console.ReadLine();
+            int a = glina - pesok;
+            int b = Convert.ToInt32(k) / a;
+            int c = gips + pesok + glina;
+            int d = c * b;
+
+            Console.WriteLine(d);
+            Console.ReadKey();
+        }
+         static bool task5 (double a, double b, double c)
+         {
+            if ((a + b <= c) & (a + c <= b) & (b + c <= b))
+            {
+                if (a == b || a == c || b == c)
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static void task5_addition ()
+        {
+            Double a;
+            Console.WriteLine("Введите значение a");
+            a = Convert.ToDouble(Console.ReadLine());
+            Double b;
+            Console.WriteLine("Введите значение b");
+            b = Convert.ToDouble(Console.ReadLine());
+            Double c;
+            Console.WriteLine("Введите значение c");
+            c = Convert.ToDouble(Console.ReadLine());
+
+            if (task5(a, b, c))
+                Console.WriteLine("Треугольник равнобедренный");
+            else
+                Console.WriteLine("Такого треугольника не существует");
+            Console.ReadKey();
+        }
+
+        public static void task6()
+        {
+            double x = Convert.ToDouble(Console.ReadLine());
+            double a = Math.Pow(Math.Log(1 + x), 2) + Math.Cos(Math.PI * Math.Pow(x, 3));
+            double b = Math.Pow(Math.E, Math.Pow(x, 2)) + Math.Cos(Math.Pow(Math.E, x)) + Math.Sqrt(1 / x);
+            double res = Math.Pow(a, Math.Sin(x)) + Math.Pow(b, 1 / x);
+            Console.WriteLine(res);
+
+            Console.ReadKey();
+        }
+
+        static void task7 ()
+        {
+            {
+                Console.WriteLine("Введите X -");
+                int x = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите Y -");
+                int y = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите R -");
+                int r = Convert.ToInt32(Console.ReadLine());
+
+                if (x > 0 && y > 0)
+                {
+                    if (((Math.Pow(x, 2) + Math.Pow(y, 2) > Math.Pow(r, 2)) && (Math.Pow(x, 2) + Math.Pow(y, 2) < r * 2)))
+                    {
+                        Console.Write("Принадлежит");
+                    }
+                    else
+                    {
+                        Console.Write("Не принадлежит");
+
+                    }
+                }
+                if (x < 0 && y < 0)
+                {
+                    if ((Math.Pow(x, 2) + Math.Pow(y, 2) > -Math.Pow(r, 2) && x > 2 * (-r) * Math.Cos(r) && y > 2 * (-r) * Math.Cos(r)))
+                    {
+                        Console.Write("Принадлежит");
+                    }
+                    else
+                    {
+                        Console.Write("Не принадлежит");
+                    }
+                }
+                Console.ReadKey();
+
+            }
+        }
+        static void task8 (double a)
+        {
+            double num = ((Math.Sin(2 * a) + Math.Sin(5 * a)) - Math.Sin(3 * a));
+            double enu = (Math.Cos(a) + 1 - 2 * Math.Pow(Math.Sin(2 * a), 2));
+            double z1 = num / enu;
+            double z2 = 2 * Math.Sin(a);
+            Console.Write(z1 + " " + z2);
+            Console.ReadKey();
+        }
+
+        static void Main(string[] args)
+        {
+            //task1();
+            //task2(2,4,6);
+            //task3();
+            //task4();
+            //task5_addition();
+            //task6();
+            //task7();
+            task8(5);
+
+        }
+
+        }
+}
