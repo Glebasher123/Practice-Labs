@@ -1,0 +1,77 @@
+using System;
+
+namespace Prakt_10
+{
+    public struct AEROFLOT
+    {
+        public string NameRace;
+        public string Type;
+        public int NumberRace;
+    }
+
+    class Program
+    {
+        static void Input(AEROFLOT[] Price)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine($"Введите данные для {i + 1}-го самолёта");
+
+                Console.Write("Введите пункт назначения самолёта: ");
+                Price[i].NameRace = Console.ReadLine();
+                Console.Write("Введите тип самолёта: ");
+                Price[i].Type = Console.ReadLine();
+                Console.Write("Введите номер рейса: ");
+                Price[i].NumberRace = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine();
+            }
+            Console.Write("Введите название самолёта о котором хотите получить информацию: ");
+            string str = Console.ReadLine();
+
+        }
+
+        static void Sort(AEROFLOT[] Price, AEROFLOT[] Temp, string str)
+        {
+            string alfRU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+
+            for (int i = 0, h = 0; i < alfRU.Length; i++)
+            {
+                for (int k = 0; k < Price.Length; k++)
+                {
+                    string n = Price[k].NameRace;
+                    if (alfRU[i] == n[0])
+                    {
+                        Temp[h++] = Price[k];
+                    }
+                }
+            }
+            Check(Temp, str);
+        }
+        static void Check(AEROFLOT[] Temp, string str)
+        {
+            Console.WriteLine();
+            int count = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Temp[i].NameRace == str)
+                {
+                    Console.WriteLine($"Название самолёта: {Temp[i].NameRace}\t\tТип самолёта {Temp[i].Type}\t\tНомер рейса: {Temp[i].NumberRace}");
+                    count++;
+                }
+            }
+            if (count == 0)
+            {
+                Console.WriteLine("\nДанного рейса не существует!");
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            AEROFLOT[] Price = new AEROFLOT[3];
+            AEROFLOT[] Temp = new AEROFLOT[3];
+            Input(Price);
+
+            Console.ReadLine();
+        }
+    }
+}
