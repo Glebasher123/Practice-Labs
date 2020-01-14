@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace lab_6
+{
+    class Program
+    {
+        static void Task1()
+        {
+            var str = "*G**l**e**b*".Replace("*", "").ToLower().ToCharArray().ToList();
+            str.ForEach(x => Console.Write(x));
+            Console.WriteLine();
+            str.Sort();
+            str.ForEach(x => Console.Write(x));
+            Console.WriteLine();
+            var Alpha = "BCDFGHJKLMNPQRSTVWXYZ".ToLower().ToCharArray();
+            foreach (var f in Alpha)
+            {
+                bool flag = false;
+                foreach (var al in str)
+                {
+                    if (f == al)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag == false)
+                {
+                    Console.Write(f);
+                }
+            }
+            Console.WriteLine();
+
+        }
+
+        static void Task2()
+        {
+            string[] Str = "потемневшее от пыли голубое южное небо".Split(' ');
+            Stack<string> strrevert = new Stack<string>(Str);
+            foreach (var s in strrevert)
+            {
+                Console.Write(s + " ");
+            }
+
+            Console.WriteLine();
+
+            foreach (var s in strrevert)
+            {
+                int counter = 0;
+                foreach (var f in strrevert)
+                {
+                    if (s == f)
+                    {
+                        ++counter;
+                    }
+                }
+
+                Console.WriteLine(s + " - " + counter);
+            }
+
+            Console.WriteLine();
+
+        }
+
+        static void Task4()
+        {
+            var allow = "aeoui".ToCharArray();
+            var text = "After school Kamal took the girls to the old house It was very old and very dirty too There was rubbish everywhere".ToLower().Split(' ').ToList();
+            text.Sort();
+            List<string> Flex = new List<string>();
+            foreach (var f in text)
+            {
+                foreach (var s in allow)
+                {
+                    if (f[0].ToString().Contains(s))
+                    {
+                        Flex.Add(f);
+                        break;
+                    }
+                }
+            }
+
+            Flex.Sort((x, y) => string.Compare(x[1].ToString(), y[1].ToString()));
+            Flex.ForEach(x => Console.WriteLine(x));
+        }
+
+        static void Main(string[] args)
+        {
+            //Task1();
+             Task2();
+            //Task4();
+            Console.ReadKey();
+        }
+    }
+}
