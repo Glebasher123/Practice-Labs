@@ -1,77 +1,77 @@
 using System;
+using System.Collections.Generic;
 
-namespace Prakt_10
+
+namespace lab10
 {
-    public struct AEROFLOT
-    {
-        public string NameRace;
-        public string Type;
-        public int NumberRace;
-    }
-
     class Program
     {
-        static void Input(AEROFLOT[] Price)
+        class AER0FL0T
         {
-            for (int i = 0; i < 3; i++)
-            {
-                Console.WriteLine($"Введите данные для {i + 1}-го самолёта");
+            string punkt;
+            int num;
+            string type;
 
-                Console.Write("Введите пункт назначения самолёта: ");
-                Price[i].NameRace = Console.ReadLine();
-                Console.Write("Введите тип самолёта: ");
-                Price[i].Type = Console.ReadLine();
-                Console.Write("Введите номер рейса: ");
-                Price[i].NumberRace = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine();
+
+            public AER0FL0T(string p, int n, string t)
+            {
+                punkt = p;
+                num = n;
+                type = t;
             }
-            Console.Write("Введите название самолёта о котором хотите получить информацию: ");
-            string str = Console.ReadLine();
 
-        }
-
-        static void Sort(AEROFLOT[] Price, AEROFLOT[] Temp, string str)
-        {
-            string alfRU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-
-            for (int i = 0, h = 0; i < alfRU.Length; i++)
+            public string GetPoint()
             {
-                for (int k = 0; k < Price.Length; k++)
-                {
-                    string n = Price[k].NameRace;
-                    if (alfRU[i] == n[0])
-                    {
-                        Temp[h++] = Price[k];
-                    }
-                }
+                return punkt;
             }
-            Check(Temp, str);
-        }
-        static void Check(AEROFLOT[] Temp, string str)
-        {
-            Console.WriteLine();
-            int count = 0;
-            for (int i = 0; i < 3; i++)
+            public int GetNum()
             {
-                if (Temp[i].NameRace == str)
-                {
-                    Console.WriteLine($"Название самолёта: {Temp[i].NameRace}\t\tТип самолёта {Temp[i].Type}\t\tНомер рейса: {Temp[i].NumberRace}");
-                    count++;
-                }
+                return num;
             }
-            if (count == 0)
+            public string GetTypeShip()
             {
-                Console.WriteLine("\nДанного рейса не существует!");
+                return type;
             }
         }
-
         static void Main(string[] args)
         {
-            AEROFLOT[] Price = new AEROFLOT[3];
-            AEROFLOT[] Temp = new AEROFLOT[3];
-            Input(Price);
+            List<AER0FL0T> Flot = new List<AER0FL0T>();
+            for (int i = 0; i < 3; ++i)
+            {
+                Console.WriteLine("\nAdd new ship. 1. Point; 2. Num; 3. Type;");
+                Flot.Add(new AER0FL0T(
+                    Console.ReadLine(),
+                    Convert.ToInt32(Console.ReadLine()),
+                    Console.ReadLine()
+                    ));
+                Console.WriteLine("Added.");
+            }
 
-            Console.ReadLine();
+            Flot.Sort((x, y) => string.Compare(x.GetPoint(), y.GetPoint()));
+
+            Flot.ForEach(x => Console.WriteLine(x.GetPoint() + " " + x.GetNum() + " " + x.GetTypeShip()));
+
+            foreach (var x in Flot)
+            {
+                Console.WriteLine(x.GetPoint() + " " + x.GetNum() + " " + x.GetTypeShip());
+            }
+
+            Console.WriteLine("=========");
+            while (true)
+            {
+                string Flex = Console.ReadLine();
+
+                int counter = 0;
+                Flot.ForEach(x => { if (Flex == x.GetPoint()) { Console.WriteLine(x.GetNum() + " " + x.GetTypeShip()); ++counter; }; });
+
+                if (counter == 0)
+                {
+                    Console.WriteLine("Таких рейсов нет.");
+                    break;
+                }
+            }
+
+            Console.ReadKey();
         }
     }
 }
