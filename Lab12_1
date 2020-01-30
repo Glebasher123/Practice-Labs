@@ -1,0 +1,79 @@
+using System;
+using System.Collections;
+
+
+namespace lab12_1
+{
+    class Program
+    {
+
+        abstract class Instrument
+        {
+            protected string Name;
+
+            public Instrument(string _Name)
+            {
+                Name = _Name;
+            }
+
+            public void Show()
+            {
+                Console.WriteLine(Name);
+            }
+        }
+
+        class Bass : Instrument
+        {
+            int num;
+            public Bass(string _Name) : base(_Name)
+            {
+                
+            }
+
+            public new void Show()
+            {
+                Console.WriteLine(Name + "  " + num);
+            }
+        }
+
+        class Strun : Instrument
+        {
+
+            public Strun(string _Name) : base(_Name)
+            {
+
+            }
+            public new void Show()
+            {
+                Console.WriteLine(Name);
+            }
+        }
+
+        class Duhovoy : Instrument
+        {
+            public Duhovoy(string _Name) : base(_Name)
+            {
+
+            }
+            public new void Show()
+            {
+                Console.WriteLine(Name);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            ArrayList Orkestr = new ArrayList();
+            Orkestr.Add(new Duhovoy("Духовой"));
+            Orkestr.Add(new Strun("Струнный"));
+            Orkestr.Add(new Bass("Ударный"));
+
+            foreach (Instrument f in Orkestr)
+            {
+                f.Show();
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
