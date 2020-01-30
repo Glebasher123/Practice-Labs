@@ -1,0 +1,120 @@
+using System;
+using System.IO;
+
+namespace lab9
+{
+    class Program
+    {
+        static void Iseven(StreamWriter sw)
+        {
+
+            int A = 20;
+            int B = 300;
+            for (; A <= B; A++)
+            {
+                if (A % 2 == 0)
+                {
+                    sw.Write(A + ", ");
+                }
+            }
+
+        }
+        static void File2 ()
+        {
+            using (var sr = new StreamReader("file.txt"))
+            {
+                int k = 0;
+                int[] arr = new int[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    var str = sr.ReadLine();
+                    arr[k++] = str.Length;
+                }
+                int max = 0;
+                for(int i = 1; i < 3; i++)
+                {
+                    if (arr[i-1] < arr[i])
+                        max = i+1;
+                }
+                Console.WriteLine(max);
+            }
+        }
+        static void Create3()
+        {
+            Directory.CreateDirectory(@"c:\temp");
+            Directory.CreateDirectory(@"c:\temp\K1");
+            Directory.CreateDirectory(@"c:\temp\K2");
+
+            string file_t1 = @"c:\temp\K1\t1.txt";
+            string str_t1 = "Иванов Иван Иванович, 1965 года рождения, место жительства г. Саратов";
+            File.WriteAllText(file_t1, str_t1);
+
+            string file_t2 = @"c:\temp\K1\t2.txt";
+            string str_t2 = "Петров Сергей Федорович, 1966 года рождения, место жительства г.Энгельс";
+            File.WriteAllText(file_t2, str_t2);
+
+            StreamWriter sw = new StreamWriter(@"c:\temp\K2\t3.txt");
+            StreamReader sr = new StreamReader(@"c:\temp\K1\t1.txt");
+            sw.WriteLine(sr.ReadToEnd());
+            sr.Close();
+            sr = new StreamReader(@"c:\temp\K1\t2.txt");
+            sw.WriteLine(sr.ReadToEnd());
+            sr.Close();
+            sw.Close();
+
+            FileInfo fileInfo_1 = new FileInfo(file_t1);
+            if (fileInfo_1.Exists)
+            {
+                Console.WriteLine("Имя файла: {0}", fileInfo_1.Name);
+                Console.WriteLine("Расположение файла: {0}", fileInfo_1.Directory);
+                Console.WriteLine("Время создания: {0}", fileInfo_1.CreationTime);
+                Console.WriteLine("Размер: {0}", fileInfo_1.Length);
+            }
+
+            FileInfo fileInfo_2 = new FileInfo(file_t2);
+            if (fileInfo_2.Exists)
+            {
+                Console.WriteLine("\nИмя файла: {0}", fileInfo_2.Name);
+                Console.WriteLine("Расположение файла: {0}", fileInfo_2.Directory);
+                Console.WriteLine("Время создания: {0}", fileInfo_2.CreationTime);
+                Console.WriteLine("Размер: {0}", fileInfo_2.Length);
+            }
+
+            File.Move(@"c:\temp\K1\t2.txt", @"c:\temp\K2\t2.txt");
+            File.Copy(@"c:\temp\K1\t1.txt", @"c:\temp\K2\t1.txt");
+            Directory.Move(@"c:\temp\K2", @"c:\temp\ALL");
+            Directory.Delete(@"c:\temp\K1", true);
+
+            DirectoryInfo temp_all = new DirectoryInfo(@"c:\temp\ALL");
+            FileInfo[] file_inf = temp_all.GetFiles();
+            foreach (FileInfo fi in file_inf)
+            {
+                Console.WriteLine("Имя файла: {0} \tРасположение файла: {1} \tРазмер: {2}", fi.Name, fi.Directory, fi.Length);
+            }
+        }
+
+        static void Main(string[] args)
+            {
+
+            string writePath = "laba.txt";
+            try
+            {
+                using (var sw = new StreamWriter(writePath))
+                {
+                    Iseven(sw);
+                }
+                Console.WriteLine("Запись прошла успешно!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            //File2();
+            Create3();
+            
+
+            Console.ReadKey();
+            }
+        }
+    }
