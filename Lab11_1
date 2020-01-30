@@ -1,0 +1,55 @@
+using System;
+
+
+namespace lab11_1
+{
+    class Program
+    {
+        class Complex
+        {
+            int first;
+            int second;
+
+            public Complex(int f, int s)
+            {
+                first = f;
+                second = s;
+                Show();
+            }
+
+            public void Show()
+            {
+                Console.WriteLine("x = " + first + "+" + second + "i");
+            }
+
+            public void Add(int _f, int _s)
+            {
+                first += _f;
+                second += _s;
+                Show();
+            }
+
+            public void Sub(int _f, int _s)
+            {
+                first -= _f;
+                second -= _s;
+                Show();
+            }
+
+            public void Mult(int _f, int _s)
+            {
+                first *= _f;
+                second *= _s;
+                Show();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Complex ComplexNum = new Complex(4, 6);
+            ComplexNum.Add(12, 6);
+
+            Console.ReadKey();
+        }
+    }
+}
