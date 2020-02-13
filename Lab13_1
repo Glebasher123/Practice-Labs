@@ -1,0 +1,84 @@
+using System;
+
+namespace GlebFlex13_1
+{
+    class Program
+    {
+        class Rombus
+        {
+            private double side;
+            private double angle;
+            public Rombus(double side, double angle)
+            {
+                this.angle = Math.PI * angle / 180.0;
+                this.side = side;
+            }
+            public void Area()
+            {
+
+                double area = Math.Pow(side, 2) * Math.Sin(angle);
+                Console.WriteLine($"Площадь ромба: {area}");
+            }
+            public void Perimeter()
+            {
+                double perimeter = 4 * side;
+                Console.WriteLine($"Периметр ромба: {perimeter}");
+            }
+
+            public void Diagonal()
+            {
+                Console.WriteLine($"Длины диагоналей: {side}");
+            }
+        }
+
+        class X
+        {
+            protected double x1;
+            protected double x2;
+
+            public X(double _x1, double _x2)
+            {
+                x1 = _x1;
+                x2 = _x2;
+            }
+        }
+
+        interface OutPut
+        {
+            void Show();
+        }
+        class Y : X, OutPut
+        {
+            double y;
+
+            public Y(double _y, double _x1, double _x2) : base(_x1, _x2)
+            {
+                y = _y;
+            }
+
+            public void Show()
+            {
+                Console.WriteLine($"x1 = {y}, x2 = {x1}, y = {x2}");
+            }
+
+            public double Reshenie()
+            {
+                return (x1 + x2) / y;
+
+            }
+        }
+        static void Main(string[] args)
+        {
+            Rombus romb = new Rombus(2, 90);
+            romb.Area();
+            romb.Perimeter();
+            romb.Diagonal();
+
+
+            Y Flex = new Y(4, 12, 7);
+            Console.WriteLine(Flex.Reshenie());
+            Flex.Show();
+            Console.ReadKey();
+        }
+    }
+}
