@@ -1,0 +1,49 @@
+using System;
+using System.Text.RegularExpressions;
+
+namespace lab_7
+{
+    class Program
+    {
+        static void Task1(string inputString)
+        {
+            var regHref = new Regex(@"http:\/\/(www.)?.{1,50}\.[a-z]{1,4}\/*");
+
+            Console.WriteLine(inputString);
+            MatchCollection matches = regHref.Matches(inputString);
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                    Console.WriteLine($"<a href=”"+ match.Value + "”>" + match.Value+ "</a>.");
+            }
+            else
+            {
+                Console.WriteLine("Совпадений не найдено");
+            }
+        }
+
+        static void Task2()
+        {
+            Console.WriteLine("Введите текст с словами, заключенными в фигурные скобки");
+            string str = Console.ReadLine();
+            string pattern = @"{([а-яА-Я0-9a-zA-z _]+)}";
+            Regex reg = new Regex(pattern);
+            Match match = reg.Match(str);
+
+            while (match.Success)
+            {
+                Console.WriteLine("(" + match.Groups[1].Value + ")");
+
+                match = match.NextMatch();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Task1("http://www.regexcookbook.com");
+            Task2();
+
+            Console.ReadKey();
+        }
+    }
+}
