@@ -1,0 +1,173 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace lab18_2
+{
+    class Program
+    {
+        static void ItsFirst()
+        {
+            using (StreamWriter sw = new StreamWriter("Flex.txt"))
+            {
+                sw.WriteLine("3,2,4,7,6,2,43,9,5,23,1");
+            }
+
+            string[] str = File.ReadAllLines("Flex.txt");
+            var flex = str[0].Split(',').Select(n => Convert.ToInt32(n)).ToArray().ToList<int>();
+            Queue<int> FlexQueue = new Queue<int>();
+
+            int c = 3; // Заданное
+
+            Console.WriteLine("Введите число диапазона A:");
+            int a = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Введите число диапазона B:");
+            int b = Int32.Parse(Console.ReadLine());
+
+            int[] Flex = new int[] { a, b };
+
+            for (int i = 0; i < flex.Count; ++i)
+            {
+                try
+                {
+                    if (flex[i] < c)
+                    {
+                        FlexQueue.Enqueue(flex[i]);
+                        flex.RemoveAt(i);
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < flex.Count; ++i)
+            {
+                try
+                {
+                    if (flex[i] > Flex[0] && flex[i] < Flex[1])
+                    {
+                        FlexQueue.Enqueue(flex[i]);
+                        flex.RemoveAt(i);
+                        --i;
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    break;
+                }
+            }
+
+            foreach (var f in flex)
+            {
+                FlexQueue.Enqueue(f);
+            }
+
+            using (var sw = new StreamWriter("FlexOut.txt"))
+            {
+                foreach (var f in FlexQueue)
+                {
+                    Console.WriteLine(f);
+                    sw.WriteLine(f);
+                }
+            }
+
+        }
+
+
+        class Cloth
+        {
+            string Name;
+            int Length;
+
+            public Cloth(string name, int length)
+            {
+                Name = checkName(name);
+                Length = length;
+            }
+
+            public int GetMass()
+            {
+                return Length;
+            }
+
+            string checkName(string Name)
+            {
+                if (char.IsUpper(Name[0]))
+                {
+                    return Name;
+                }
+                else
+                {
+                    throw new ArgumentException("Char is not upper");
+                }
+            }
+
+            public string GetName()
+            {
+                return Name;
+            }
+        }
+
+        static void ItsSecond()
+        {
+            Dictionary<int, Cloth> products = new Dictionary<int, Cloth>(5);
+            products.Add(1, new Cloth("Ажур", 12));
+            products.Add(2, new Cloth("Вельвет-рубчик", 12123));
+            products.Add(3, new Cloth("Шерсть", 3412));
+            products.Add(4, new Cloth("Атлас", 1223));
+            products.Add(5, new Cloth("Хайп", 41212));
+            products.Add(6, new Cloth("Бархат", 21412));
+            products.Add(7, new Cloth("Велюр", 523412));
+            products.Add(8, new Cloth("Лен", 12412));
+            products.Add(9, new Cloth("Альпака", 12312));
+            products.Add(10, new Cloth("Ангора", 412412));
+
+            foreach (var f in products)
+            {
+                Console.WriteLine($"{f.Key}, {f.Value.GetName()} - {f.Value.GetMass()}");
+            }
+
+            Console.WriteLine("Add new Name Key");
+
+
+            products.Add(11, new Cloth(Console.ReadLine(), Convert.ToInt32(Console.ReadLine())));
+
+            products = products.OrderBy(pair => pair.Value.GetName()).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+
+            Console.WriteLine("Remove Items");
+
+            int Max = 0;
+            int key = 0;
+            for (int i = 1; i < products.Count+1; ++i)
+            {
+                if (products[i].GetName().Length > Max)
+                {
+                    Max = products[i].GetName().Length;
+                    key = i;
+                }
+            }
+
+            products.Remove(key);
+             
+            foreach (var f in products)
+            {
+                Console.WriteLine($"{f.Key}, {f.Value.GetName()} - {f.Value.GetMass()}");
+            }
+        }
+        static void Main(string[] args)
+        {
+            ItsFirst();
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            ItsSecond();
+
+            Console.ReadKey();
+        }
+    }
+}
