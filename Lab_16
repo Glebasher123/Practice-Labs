@@ -1,0 +1,172 @@
+using System;
+
+namespace lab15_1
+{
+    class Program
+    {
+        static bool CheckNum(int num)
+        {
+            Console.WriteLine(CheckNumber(num) ? "Содержит единицу" : null);
+            if (num % 5 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static bool CheckNumber(int num)
+        {
+
+            while (num > 0)
+            {
+                if (num % 10 == 1)
+                {
+                    return true;
+                }
+                num /= 10;
+            }
+            return false;
+        }
+
+        delegate bool SecondFlex(int num);
+        delegate void Message(string mess);
+        static void SecondAttempt()
+        {
+            SecondFlex Flex = CheckNum;
+        Flex:
+            try
+            {
+                int first = Int32.Parse(Console.ReadLine());
+                int second = Int32.Parse(Console.ReadLine());
+
+                Message handler = delegate (string mes)
+                {
+                    Console.WriteLine(mes);
+                };
+
+                if (Flex(first) == true && Flex(second) == true)
+                {
+                    handler("True");
+                }
+                else
+                {
+                    handler("False");
+                }
+            }
+            catch (Exception)
+            {
+                goto Flex;
+            }
+        }
+
+
+        delegate void DoorHoundler(object obj, PlantsArgs m);
+        class PlantsArgs
+        {
+            public string message;
+            public PlantsArgs(string message)
+            {
+                this.message = message;
+                Console.WriteLine(this.message);
+            }
+        }
+        class Plant
+        {
+            int Flowers;
+            int Leafs;
+
+            event DoorHoundler Create;
+            public Plant(int Flow, int Leaf)
+            {
+                Flowers = Flow;
+                Leafs = Leaf;
+
+                try
+                {
+                    Create.Invoke(this, new PlantsArgs("Created"));
+                }
+                catch { }
+            }
+
+            public void Remove(int num)
+            {
+                if (num > Flowers || num > Leafs)
+                {
+                    throw new Exception("Bad");
+                }
+                else
+                {
+                    Flowers -= num;
+                    Leafs -= num;
+
+
+                    Console.WriteLine("Done.");
+                    Show();
+                }
+            }
+
+
+            public void Add(int num)
+            {
+                Flowers += num;
+                Leafs += num;
+                Console.WriteLine("Done. ");
+                Show();
+            }
+
+            public void Show()
+            {
+                Message handler = delegate (string mes)
+                {
+                    Console.WriteLine(mes);
+                };
+
+
+                handler("Flowers - " + Flowers + " Leafs - " + Leafs);
+            }
+
+        }
+
+        static void Main(string[] args)
+        {
+            //var Flex = new double[10] { 12, 4, 5, 6.3, 2, 4.5, 6, 8.16, 83.2, 10 };
+            //Sorting(Flex);
+
+            //SecondAttempt();
+            //CalculateThird();
+
+            Plant plant = new Plant(12, 10);
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Сколько листков хотите убрать/добавить?");
+                    int i = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("1. Remove 2. Add");
+                    int num = Int32.Parse(Console.ReadLine());
+                    switch (num)
+                    {
+                        case 1:
+                            plant.Remove(i);
+                            break;
+                        case 2:
+                            plant.Add(i);
+                            break;
+                        default:
+                            throw new Exception("Bad");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
