@@ -1,0 +1,139 @@
+using System;
+using System.Linq;
+
+namespace lab8
+{
+    class Program
+    {
+        static void Switch(int x, int y)
+        {
+            double e = 2.71;
+            double f = 0;
+            Console.WriteLine("Вид функции f(x) f(x): \n 1 - sh(x) \n 2 - x^2 \n 3 - ex. ");
+            string selection = Console.ReadLine();
+            switch (selection)
+            {
+                case "1":
+                    {
+                        f = Math.Sinh(x);
+                        Check(f, x, y);
+                        break;
+                    }
+                case "2":
+                    {
+                        f = Math.Pow(x, 2);
+                        Check(f, x, y);
+                        break;
+                    }
+                case "3":
+                    {
+                        f = Math.Pow(e, x);
+                        Check(f, x, y);
+                        break;
+                    }
+
+            }
+        }
+        static void Check(double f, int x, int y)
+        {
+            if (x > y)
+            {
+                Console.WriteLine("Ответ " + y * Math.Sqrt((f) + 3 * Math.Sin(x)));
+            }
+            else
+            {
+                if (x < y)
+                {
+                    Console.WriteLine("Ответ " + x * Math.Sqrt(Math.Abs(f)));
+                }
+                else
+                {
+                    Console.WriteLine("Ответ " + Math.Pow(Math.Abs(f), 1 / 3));
+                }
+            }
+        }
+
+        static void Input()
+        {
+            Console.Write("Введите x: ");
+            int x = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Введите y: ");
+            int y = Convert.ToInt32(Console.ReadLine());
+
+            Switch(x, y);
+        }
+        //-------------------------2
+        static void Input2()
+        {
+            string num = Console.ReadLine();
+            int k = Convert.ToInt32(Console.ReadLine());
+            Calc(num,k);
+        }
+        static void Calc (string num, int k)
+        {
+            Console.WriteLine(num[k - 1]);
+        }
+        static void Prakt4()
+        {
+            Console.WriteLine("Введите число N");
+            int n = Int32.Parse(Console.ReadLine());
+            int[] array = new int[n];
+            for (int i = 0; i < n; ++i)
+            {
+                array[i] = Int32.Parse(Console.ReadLine());
+            }
+
+            int tempmax = array[0] + array[1];
+            for (int i = 1; i < array.Length - 1; ++i)
+            {
+                if ((array[i] + array[i + 1]) > tempmax)
+                {
+                    tempmax = array[i] + array[i + 1];
+                }
+            }
+
+            Console.WriteLine("Max: " + tempmax);
+        }
+
+
+        static void ShiftRight3(ref int A, ref int B, ref int C)
+        {
+            int temp = C;
+            C = B;
+            B = A;
+            A = temp;
+        }
+
+        static bool IsPalindrome(int k)
+        {
+            char[] temp = k.ToString().ToCharArray();
+            var secondtemp = temp.Reverse().ToArray();
+
+            for (int i = 0; i < temp.Length; ++i)
+            {
+                if (temp[i] != secondtemp[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        static void Main(string[] args)
+        {
+            //Prakt4();
+            int a = 1;
+            int b = 2;
+            int c = 3;
+
+            ShiftRight3(ref a, ref b, ref c);
+            ShiftRight3(ref a, ref b, ref c);
+            Console.WriteLine(a + " " + b + " " + c);
+
+            Console.WriteLine(IsPalindrome(1221));
+            Console.ReadKey();
+            //Input();
+            Input2();
+            Console.ReadKey();
+        }
+    }
+}
