@@ -1,0 +1,219 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace lab18
+{
+    class Program
+    {
+
+        class First
+        {
+            public First()
+            {
+                List<double> Nums = new List<double> { 4, 4, 5, 1, 3, 2 };
+                int indexs = Nums.Count;
+                for (int i = 0; i < indexs; ++i)
+                {
+                    Nums.Add(Nums[i] * 2);
+                }
+                Nums.ForEach(x => Console.Write(x + " "));
+                Console.WriteLine("Items: " + Nums.Count);
+                Console.WriteLine();
+
+                Nums.Add(Convert.ToDouble(Console.ReadLine()));
+                Nums.ForEach(x => Console.Write(x + " "));
+                Console.WriteLine("Items: " + Nums.Count);
+                Console.WriteLine();
+
+
+                double min = Nums[0];
+                Nums.ForEach(x =>
+                {
+                    if (x > 0)
+                    {
+                        if (x < min)
+                        {
+                            if (x % 2 == 0)
+                            {
+                                min = x;
+                            }
+                        }
+                    };
+                });
+
+                Console.WriteLine("Min: " + min);
+
+                for (int i = 0; i < Nums.Count; ++i)
+                {
+                    if (Nums[i] > min) { Nums.Remove(Nums[i]); --i; };
+                }
+
+                Nums.ForEach(x => Console.Write(x + " "));
+                Console.WriteLine("Items: " + Nums.Count);
+                Console.WriteLine();
+
+            }
+        }
+
+        class Second
+        {
+            class Hero
+            {
+                string Name;
+                int HP;
+                string Alive;
+                int count;
+
+                public Hero(string Name, int SwordCount, int HP, string Alive)
+                {
+                    this.Name = Name;
+                    this.HP = HP;
+                    this.count = SwordCount;
+                    this.Alive = Alive;
+                }
+
+                public void Show()
+                {
+                    Console.WriteLine($"Name - {Name}, HP - {HP}, Alive - {Alive}, Sowrd Count - {count}");
+                }
+
+                public int GetSword()
+                {
+                    return count;
+                }
+
+                public string GetName()
+                {
+                    return Name;
+                }
+
+                public int GetHP()
+                {
+                    return HP;
+                }
+
+                public string GetAlive()
+                {
+                    return Alive;
+                }
+            }
+
+            public Second()
+            {
+                Console.WriteLine("Print Name, SwordCount, HP, Alive(True, False)");
+                List<Hero> heroes = new List<Hero>();
+                heroes.Add(new Hero(Console.ReadLine(), Int32.Parse(Console.ReadLine()), Int32.Parse(Console.ReadLine()), Console.ReadLine()));
+                heroes.Add(new Hero("Artas", 3, 53, "Live"));
+                heroes.Add(new Hero("Invoker", 6, 84, "Live"));
+                heroes.Add(new Hero("Tinker", 4, 54, "Live"));
+                heroes.ForEach((x) => x.Show());
+
+                int Average = 0;
+                heroes.ForEach((x) => Average += x.GetHP());
+                Average /= heroes.Count;
+                heroes.Add(new Hero("Herald", 2, Average, "Live"));
+
+                Console.WriteLine();
+                heroes.ForEach((x) => x.Show());
+                Console.WriteLine(heroes.Count);
+
+                int MinSword = heroes[0].GetSword();
+                heroes.ForEach((x) => { MinSword = MinSword > x.GetSword() ? x.GetSword() : MinSword; });
+
+                for (int i = 0, counter = 0; i < heroes.Count || counter < 3; ++i)
+                {
+                    try
+                    {
+                        if (heroes[i].GetSword() == MinSword)
+                        {
+                            heroes.RemoveAt(i);
+                            ++counter;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                    }
+                }
+
+                heroes.ForEach((x) => x.Show());
+
+            }
+        }
+
+        class Third
+        {
+            public Third()
+            {
+                ArrayList Flex = new ArrayList();
+                Random rand = new Random();
+
+                Console.Write("Введите количество элементов - ");
+                int Num = Int32.Parse(Console.ReadLine());
+
+                for (int i = 0; i < Num; ++i)
+                {
+                    Flex.Add(rand.Next(0, 100));
+                }
+
+                foreach (var f in Flex)
+                {
+                    Console.Write(f + " ");
+                }
+                Console.WriteLine("Count - " + Flex.Count);
+
+                for (int i = 0; i < 5; ++i)
+                {
+                Flex:
+                    try
+                    {
+                        int Temp = Int32.Parse(Console.ReadLine());
+                        if (Temp > 0)
+                        {
+                            throw new Exception("Bad Argument");
+                        }
+                        else
+                        {
+                            Flex.Add(Temp);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        goto Flex;
+                    }
+                }
+
+                foreach (var f in Flex)
+                {
+                    Console.Write(f + " ");
+                }
+                Console.WriteLine("Count - " + Flex.Count);
+
+                Console.WriteLine();
+                for (int i = 0; i < Flex.Count; i += 2)
+                {
+                    if ((int)Flex[i] < 0)
+                    {
+                        Flex.RemoveAt(i);
+                    }
+                }
+
+                foreach (var f in Flex)
+                {
+                    Console.Write(f + " ");
+                }
+                Console.WriteLine("Count - " + Flex.Count);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            var First = new First();
+            var Second = new Second();
+            var Third = new Third();
+            Console.ReadKey();
+        }
+    }
+}
