@@ -1,0 +1,105 @@
+using System;
+
+namespace GlebFlex14_2
+{
+    class Program
+    {
+        class Student
+        {
+            string Name;
+            int Son;
+            int Eda;
+            int Ucheba;
+            int Flex;
+            double AverBal;
+
+            public Student(string _Name, int _Sleep, int _Teach, int _Food, int _Flex, double AverBall)
+            {
+                Name = checkName(_Name) ? _Name : throw new ArgumentException("BadName");
+                int time = Son = checkTime(_Sleep) ? _Sleep : throw new ArgumentException("BadTime");
+                time += Eda = checkTime(_Food) ? _Food : throw new ArgumentException("BadTime");
+                time += Ucheba = checkTime(_Teach) ? _Teach : throw new ArgumentException("BadTime");
+                time += Flex = checkTime(_Flex) ? _Flex : throw new ArgumentException("BadTime");
+
+                if (time > 24)
+                {
+                    throw new ArgumentException("BadTime");
+                }
+                this.AverBal = AverBall;
+            }
+
+            public void GetPar()
+            {
+                string item = Son > Eda ? "Sleep" : "Food";
+                if (item == "Sleep")
+                {
+                    item = Son > Ucheba ? "Sleep" : "Ucheba";
+
+                    if (item == "Sleep")
+                    {
+                        item = Son > Flex ? "Sleep" : "Flex";
+                    }
+                    else
+                    {
+                        item = Ucheba > Flex ? "Ucheba" : "Flex";
+                    }
+                }
+                else
+                {
+                    item = Eda > Ucheba ? "Food" : "Ucheba";
+
+                    if (item == "Food")
+                    {
+                        item = Eda > Flex ? "Food" : "Flex";
+                    }
+                    else
+                    {
+                        item = Ucheba > Flex ? "Ucheba" : "Flex";
+                    }
+                }
+                Console.WriteLine(item);
+            }
+            public void Show()
+            {
+                Console.WriteLine("Name: " + Name);
+                Console.WriteLine("Time:\n\tSleep: " + Son + "\n\tTeach: " + Ucheba + "\n\tFood: " + Eda + "\n\tFlex: " + Flex);
+                Console.WriteLine("\tAverage Mark: " + AverBal);
+                Console.Write("Best Time: ");
+                GetPar();
+            }
+
+            bool checkName(string Name)
+            {
+                if (char.IsUpper(Name[0]))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            bool checkTime(int time)
+            {
+                if (time > 0 || time < 24)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
+
+
+        static void Main(string[] args)
+        {
+            var Stud = new Student("flex", 20, 4, 6, 2, 6.4);
+            Stud.Show();
+            Console.ReadKey();
+        }
+    }
+}
