@@ -1,0 +1,593 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Xml.Serialization;
+
+namespace Kpyap10
+{
+    [Serializable]
+    public class Program
+    {
+
+        interface IShowInfo
+        {
+            void ShowInfo();
+        }
+        [Serializable]
+        public abstract class Undead
+        {
+            public string Name { get; }
+            public string Gender { get; }
+            public int? Age { get; }
+            public int Force;
+            public int Dodge { get; }
+            public int Exp;
+            public int Level;
+            public string specialSkill;
+            public int Money { get; set; }
+
+
+            public void Serialize()
+            {
+                FileStream Flex = new FileStream($"BinForm{Name}.dat", FileMode.Append);
+                BinaryFormatter formatter = new BinaryFormatter();
+                try
+                {
+                    formatter.Serialize(Flex, this);
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                    throw;
+                }
+
+                FileStream FlexXaml = new FileStream($"XamlForm1{Name}.xml", FileMode.Append);
+                XmlSerializer xmlForm = new XmlSerializer(GetType());
+                try
+                {
+                    xmlForm.Serialize(FlexXaml, this);
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                    throw;
+                }
+
+
+                FileStream sf = new FileStream($"SoapFile1{Name}.soap", FileMode.Append);
+                SoapFormatter Sformatter = new SoapFormatter();
+                try
+                {
+                    Sformatter.Serialize(sf, GetType());
+                }
+                catch (SerializationException e)
+                {
+                    Console.WriteLine("Failed to serialize. Reason: " + e.Message + e.TargetSite);
+                    throw;
+                }
+            }
+
+            public int GetForce()
+            {
+                return Force;
+            }
+            public int GetLevel()
+            {
+                return Level;
+            }
+            public void KilledMonster(int LvlMonster, string TypeMonster)
+            {
+                this.Money += LvlMonster / this.Level * (TypeMonster == "Human" ? 12 : 6);
+                this.Exp += LvlMonster / this.Level * (TypeMonster == "Human" ? Convert.ToInt32(new Random().Next(30, 50)) : Convert.ToInt32(new Random().Next(5, 15)));
+                CheckLvl();
+            }
+            public void CheckLvl()
+            {
+                if (this.Exp > 1000)
+                {
+                    this.Level += 1;
+                    this.Exp = this.Exp - 1000;
+                }
+            }
+
+            public void ReadThomeOfKnowlage(string NameOfSkill, int force)
+            {
+                this.specialSkill = NameOfSkill;
+                this.Force += force;
+            }
+
+            public Undead(string name, string gender, int age)
+            {
+                this.Level = 1;
+                this.Name = name;
+                this.Age = age;
+                this.Gender = gender;
+                this.Dodge = Convert.ToInt32(new Random().Next(1, 99));
+                this.Force = Convert.ToInt32(new Random().Next(1, 49));
+                Serialize();
+            }
+
+            public Undead(string name, string gender)
+            {
+                this.Level = 1;
+                this.Name = name;
+                this.Gender = gender;
+                this.Dodge = Convert.ToInt32(new Random().Next(1, 99));
+                this.Force = Convert.ToInt32(new Random().Next(1, 49));
+                Serialize();
+            }
+            public Undead() { }
+
+            public Undead(string name, int age)
+            {
+                this.Level = 1;
+                this.Name = name;
+                this.Age = age;
+                this.Dodge = Convert.ToInt32(new Random().Next(1, 99));
+                this.Force = Convert.ToInt32(new Random().Next(1, 49));
+                Serialize();
+            }
+            public Undead(string name)
+            {
+                this.Level = 1;
+                this.Name = name;
+                this.Dodge = Convert.ToInt32(new Random().Next(1, 99));
+                this.Force = Convert.ToInt32(new Random().Next(1, 49));
+                Serialize();
+            }
+        }
+
+        [Serializable]
+        public class UndeadHuman : Undead, IShowInfo
+        {
+            public string StartLocation;
+            public int QuestIndex;
+            public UndeadHuman(string name, string gender, int age) : base(name, gender, age)
+            {
+                SetLocation();
+                this.QuestIndex = 01;
+                spawn();
+                Welcome();
+            }
+
+            public UndeadHuman() { }
+            public UndeadHuman(string name, string gender) : base(name, gender)
+            {
+                SetLocation();
+                spawn();
+                this.QuestIndex = 01;
+                Welcome();
+            }
+
+            public void ShowInfo()
+            {
+                Console.WriteLine(this.Name);
+            }
+            public virtual void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} отдал честь.");
+            }
+
+            public virtual void DonateLvlUp()
+            {
+                base.Level += 1;
+                Console.WriteLine("Cheer. Ты внес в казну золота на еще один уровень.");
+            }
+
+            public void spawn()
+            {
+                Console.WriteLine($"Ваш персонаж заспавнился в локации {this.StartLocation}");
+            }
+
+            public void Welcome()
+            {
+                Console.WriteLine($"Добро пожаловать в {this.StartLocation}. Возьмите ваш первый квест в таверне!");
+            }
+            public virtual void SetLocation()
+            {
+                var rand = Convert.ToInt32(new Random().Next(1, 3));
+                switch (rand)
+                {
+                    case 1:
+                        this.StartLocation = "Леса Лордерона";
+                        break;
+                    case 2:
+                        this.StartLocation = "Громовой Утес";
+                        break;
+                    case 3:
+                        this.StartLocation = "Оргримар";
+                        break;
+                }
+            }
+        }
+        [Serializable]
+        public class UndeadAnimal : Undead, IShowInfo
+        {
+            public string StartLocation;
+            public int Height;
+            public string RaceSkill;
+            public UndeadAnimal() { }
+            public UndeadAnimal(string name, int height, string gender, int age) : base(name, gender, age)
+            {
+                this.Height = height;
+                SetLocation();
+                spawn();
+                Welcome();
+                this.RaceSkill = "Охота";
+            }
+
+            public UndeadAnimal(string name, int height, string gender) : base(name, gender)
+            {
+                this.Height = height;
+                SetLocation();
+                spawn();
+                Welcome();
+                this.RaceSkill = "Охота";
+            }
+
+            public void DonateLvlUp()
+            {
+                base.Level += 1;
+                Console.WriteLine("Cheer. Ты задонатил на один уровень!");
+            }
+
+            public virtual void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} скорчил рожу.");
+            }
+
+            public void spawn()
+            {
+                Console.WriteLine($"Ваш персонаж воскрес в локации {this.StartLocation}");
+            }
+
+            public void Welcome()
+            {
+                Console.WriteLine($"Тебя восресили в локации {this.StartLocation}. Возьмите ваш первый квест у ближайшего чумного доктора!");
+            }
+            public virtual void SetLocation()
+            {
+                var rand = Convert.ToInt32(new Random().Next(1, 3));
+                switch (rand)
+                {
+                    case 1:
+                        this.StartLocation = "Наксрамас";
+                        break;
+                    case 2:
+                        this.StartLocation = "Кельталас";
+                        break;
+                    case 3:
+                        this.StartLocation = "Забытые земли";
+                        break;
+                }
+            }
+
+            public void ShowInfo()
+            {
+                Console.WriteLine(this.Name);
+            }
+        }
+        [Serializable]
+        public class UndeadDoctor : UndeadHuman
+        {
+            public UndeadDoctor() { }
+            public string HeroClass;
+            public UndeadDoctor(string name, string gender, int age) : base(name, gender, age)
+            {
+                this.HeroClass = "Doctor";
+
+            }
+
+            public UndeadDoctor(string name, int height, string gender) : base(name, gender)
+            {
+                this.HeroClass = "Doctor";
+
+            }
+
+            public override void DonateLvlUp()
+            {
+                base.Level += 1;
+                Console.WriteLine("Cheer. Теперь ты можешь лечить еще лучше");
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} показал палец свой костлявой рукой.");
+            }
+        }
+        [Serializable]
+        public class UndeadTank : UndeadAnimal
+        {
+            public string HeroClass;
+            public UndeadTank(string name, int height, string gender, int age) : base(name, height, gender, age)
+            {
+                this.HeroClass = "Tank";
+
+            }
+            public UndeadTank() { }
+
+            public UndeadTank(string name, int height, string gender) : base(name, height, gender)
+            {
+                this.HeroClass = "Tank";
+
+            }
+
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} постучал по щиту");
+            }
+        }
+        [Serializable]
+        public class UndeadLich : UndeadAnimal
+        {
+            string HeroClass;
+            public UndeadLich(string name, int height, string gender, int age) : base(name, height, gender, age)
+            {
+                this.HeroClass = "Lich";
+
+            }
+
+            public UndeadLich() { }
+
+            public UndeadLich(string name, int height, string gender) : base(name, height, gender)
+            {
+                this.HeroClass = "Lich";
+
+            }
+
+            public override void SetLocation()
+            {
+                base.StartLocation = "Цитадель Ледяной Короны";
+            }
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} воскресил ближайших трупов");
+            }
+        }
+        [Serializable]
+        public class UndeadNecro : UndeadHuman
+        {
+            public string HeroClass;
+            public UndeadNecro(string name, string gender, int age) : base(name, gender, age)
+            {
+                this.HeroClass = "Necro";
+
+            }
+            public UndeadNecro() { }
+
+            public UndeadNecro(string name, string gender) : base(name, gender)
+            {
+                this.HeroClass = "Necro";
+
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} некротически вздохнул");
+            }
+        }
+        [Serializable]
+        public class UndeadRetard : UndeadAnimal
+        {
+            public string HeroClass;
+            public UndeadRetard(string name, int height, string gender, int age) : base(name, height, gender, age)
+            {
+                this.HeroClass = "Retard";
+
+            }
+            public UndeadRetard() { }
+            public UndeadRetard(string name, int height, string gender) : base(name, height, gender)
+            {
+                this.HeroClass = "Retard";
+
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} затупил");
+            }
+        }
+        [Serializable]
+        public class UndeadGnoos : UndeadHuman
+        {
+            public string HeroClass;
+            public UndeadGnoos(string name, string gender, int age) : base(name, gender, age)
+            {
+                this.HeroClass = "Gnoos";
+
+            }
+            public UndeadGnoos() { }
+            public UndeadGnoos(string name, int height, string gender) : base(name, gender)
+            {
+                this.HeroClass = "Gnoos";
+
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} изверг непонятную слизь");
+            }
+        }
+        [Serializable]
+        public class UndeadAssasin : UndeadAnimal
+        {
+            public string HeroClass;
+
+            public UndeadAssasin() { }
+            public UndeadAssasin(string name, int height, string gender, int age) : base(name, height, gender, age)
+            {
+                this.HeroClass = "Tank";
+
+            }
+
+            public UndeadAssasin(string name, int height, string gender) : base(name, height, gender)
+            {
+                this.HeroClass = "Tank";
+
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} скрылся в тени");
+            }
+        }
+        [Serializable]
+        public class UndeadBard : UndeadHuman
+        {
+            public string HeroClass;
+            public UndeadBard(string name, string gender, int age) : base(name, gender, age)
+            {
+                this.HeroClass = "Bard";
+
+            }
+
+            public UndeadBard() { }
+
+            public UndeadBard(string name, string gender) : base(name, gender)
+            {
+                this.HeroClass = "Bard";
+
+            }
+
+            public override void Emoji()
+            {
+                Console.WriteLine($"Хе-хе, {base.Name} поиграл на лютне");
+            }
+        }
+
+        public static void PrintHeroes(ArrayList Heroes)
+        {
+            foreach (var h in Heroes)
+            {
+                object type = h.GetType();
+                switch (type.ToString())
+                {
+                    case "Kpyap10.Program+UndeadAnimal":
+                        var f = (UndeadAnimal)h;
+                        Console.WriteLine("Name: " + f.Name + "\tAge: " + f.Age + "\tLevel: " + f.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadDoctor":
+                        var d = (UndeadDoctor)h;
+                        Console.WriteLine("Name: " + d.Name + "\tAge: " + d.Age + "\tLevel: " + d.GetLevel());
+                        break;
+
+                    case "Kpyap10.Program+UndeadTank":
+                        var t = (UndeadTank)h;
+                        Console.WriteLine("Name: " + t.Name + "\tAge: " + t.Age + "\tLevel: " + t.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadAssasin":
+                        var a = (UndeadAssasin)h;
+                        Console.WriteLine("Name: " + a.Name + "\tAge: " + a.Age + "\tLevel: " + a.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadBard":
+                        var b = (UndeadBard)h;
+                        Console.WriteLine("Name: " + b.Name + "\tAge: " + b.Age + "\tLevel: " + b.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadGnoos":
+                        var g = (UndeadGnoos)h;
+                        Console.WriteLine("Name: " + g.Name + "\tAge: " + g.Age + "\tLevel: " + g.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadNecro":
+                        var n = (UndeadNecro)h;
+                        Console.WriteLine("Name: " + n.Name + "\tAge: " + n.Age + "\tLevel: " + n.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadHuman":
+                        var r = (UndeadHuman)h;
+                        Console.WriteLine("Name: " + r.Name + "\tAge: " + r.Age + "\tLevel: " + r.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadLich":
+                        var l = (UndeadAnimal)h;
+                        Console.WriteLine("Name: " + l.Name + "\tAge: " + l.Age + "\tLevel: " + l.GetLevel());
+                        break;
+                    case "Kpyap10.Program+Undead":
+                        var u = (Undead)h;
+                        Console.WriteLine("Name: " + u.Name + "\tAge: " + u.Age + "\tLevel: " + u.GetLevel());
+                        break;
+                    case "Kpyap10.Program+UndeadRetard":
+                        var re = (UndeadRetard)h;
+                        Console.WriteLine("Name: " + re.Name + "\tAge: " + re.Age + "\tLevel: " + re.GetLevel());
+                        break;
+
+
+                }
+
+            }
+        }
+
+        public static List<Undead> SortHeroes(List<Undead> Heroes)
+        {
+            Console.WriteLine("What u want?\n1.Sort by Level.\n2.Sort by Name.\n3.Sort by Force.\n4.Sort by Dodge\n5.Sort By Age.");
+        Flex:
+            IOrderedEnumerable<Undead> sortedUsers;
+            try
+            {
+                switch (Convert.ToInt32(Console.ReadLine()))
+                {
+                    case 1:
+                        sortedUsers = Heroes.OrderBy(u => u.GetLevel());
+                        Console.WriteLine($"Minimal: {sortedUsers.Min(i => i.GetLevel())}, Maximal {sortedUsers.Max(i => i.GetLevel())}");
+                        break;
+                    case 2:
+                        sortedUsers = Heroes.OrderBy(u => u.Name);
+                        break;
+                    case 3:
+                        sortedUsers = Heroes.OrderBy(u => u.GetForce());
+                        Console.WriteLine($"Minimal: {sortedUsers.Min(i => i.GetForce())}, Maximal {sortedUsers.Max(i => i.GetForce())}");
+                        break;
+                    case 4:
+                        sortedUsers = Heroes.OrderBy(u => u.Dodge);
+                        Console.WriteLine($"Minimal: {sortedUsers.Min(i => i.Dodge)}, Maximal {sortedUsers.Max(i => i.Dodge)}");
+                        break;
+                    case 5:
+                        sortedUsers = Heroes.OrderBy(u => u.Age);
+                        Console.WriteLine($"Minimal: {sortedUsers.Min(i => i.Age)}, Maximal {sortedUsers.Max(i => i.Age)}");
+                        break;
+                    default:
+                        Console.WriteLine("Bad.");
+                        goto Flex;
+                }
+                return sortedUsers.ToList();
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Bad");
+                goto Flex;
+            }
+        }
+
+
+
+
+        public static void Main(string[] args)
+        {
+
+            ArrayList Heroes = new ArrayList();
+
+
+
+            var AnimalDead = new UndeadAnimal("Чумной1337", 84, "Man", 14);
+            Heroes.Add(AnimalDead);
+            AnimalDead.Emoji();
+            AnimalDead.DonateLvlUp();
+            Console.WriteLine($"Текущий уровень: {AnimalDead.GetLevel()}");
+            Console.WriteLine();
+
+            var UndeadDoc = new UndeadDoctor("УбийцаГоблинов", "Man", 32);
+            Heroes.Add(UndeadDoc);
+            UndeadDoc.Emoji();
+            UndeadDoc.DonateLvlUp();
+            Console.WriteLine($"Текущий уровень: {AnimalDead.GetLevel()}");
+            Console.WriteLine();
+
+            PrintHeroes(Heroes);
+
+            Console.ReadKey();
+        }
+    }
+}
