@@ -1,0 +1,266 @@
+using System;
+using System.Collections.Generic;
+
+namespace lab15_1
+{
+    class Program
+    {
+        static void SortingByAsceding(double[] FlexArray)
+        {
+            List<double> FlexQ = new List<double>();
+            foreach (var f in FlexArray)
+            {
+                if (f % 1 == 0)
+                {
+                    FlexQ.Add(f);
+                }
+            }
+            FlexQ.Sort();
+            List<double> FlexQ2 = new List<double>();
+            foreach (var f in FlexArray)
+            {
+                if (f % 1 != 0)
+                {
+                    FlexQ2.Add(f);
+                }
+            }
+            FlexQ2.Sort((a, b) => b.CompareTo(a));
+            FlexQ.AddRange(FlexQ2);
+            ShowArr(FlexQ);
+        }
+
+        static void ShowArr(double[] FlexArray)
+        {
+            foreach (var f in FlexArray)
+            {
+                Console.Write(f + "% ");
+            }
+        }
+
+        static void ShowArr(List<double> FlexArray)
+        {
+            foreach (var f in FlexArray)
+            {
+                Console.Write(f + " ");
+            }
+        }
+
+        static void SecondSort(double[] FlexArray)
+        {
+            double[] Flex = new double[FlexArray.Length];
+
+            int i = 0;
+            foreach (var f in FlexArray)
+            {
+                Flex[i] = f / 10 * 100;
+                ++i;
+            }
+
+            ShowArr(Flex);
+        }
+
+
+        delegate void First(double[] FlexArray);
+
+        static void Sorting(double[] FlexArray)
+        {
+            First Flex;
+        Flex:
+            try
+            {
+                Console.WriteLine("1. Sort by ask. 2. 10 and % ");
+
+                string choose = Console.ReadLine();
+                switch (choose)
+                {
+                    case "1":
+                        Flex = SortingByAsceding;
+                        break;
+                    case "2":
+                        Flex = SecondSort;
+                        break;
+                    default:
+                        throw new Exception("Bad argument");
+                }
+
+                Flex(FlexArray);
+            }
+            catch (Exception)
+            {
+                goto Flex;
+            }
+        }
+
+        static bool CheckNum(int num)
+        {
+            Console.WriteLine(CheckNumber(num) ? "Содержит единицу" : null);
+            if (num % 5 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static bool CheckNumber(int num)
+        {
+
+            while (num > 0)
+            {
+                if (num % 10 == 1)
+                {
+                    return true;
+                }
+                num /= 10;
+            }
+            return false;
+        }
+
+        delegate bool SecondFlex(int num);
+        static void SecondAttempt()
+        {
+            SecondFlex Flex = CheckNum;
+        Flex:
+            try
+            {
+                int first = Int32.Parse(Console.ReadLine());
+                int second = Int32.Parse(Console.ReadLine());
+
+                if (Flex(first) == true && Flex(second) == true)
+                {
+                    Console.WriteLine("True");
+                }
+                else
+                {
+                    Console.WriteLine("False");
+                }
+            }
+            catch (Exception)
+            {
+                goto Flex;
+            }
+        }
+
+        delegate void Calcul2(double x);
+
+        static void FirstCal(double x)
+        {
+            Console.WriteLine(Math.Tan(x + 7));
+        }
+
+        static void SecondCal(double x)
+        {
+            Console.WriteLine(Math.Cos(-x - 19));
+        }
+        static void CalculateThird()
+        {
+            Calcul2 cal = FirstCal;
+            cal += SecondCal;
+            for (double i = -1; i < 29; i += 0.5)
+            {
+                cal(i);
+            }
+        }
+
+        delegate void DoorHoundler(object obj, PlantsArgs m);
+        class PlantsArgs
+        {
+            public string message;
+            public PlantsArgs(string message)
+            {
+                this.message = message;
+                Console.WriteLine(this.message);
+            }
+        }
+        class Plant
+        {
+            int Flowers;
+            int Leafs;
+
+            event DoorHoundler Create;
+            public Plant(int Flow, int Leaf)
+            {
+                Flowers = Flow;
+                Leafs = Leaf;
+
+                try
+                {
+                    Create.Invoke(this, new PlantsArgs("Created"));
+                }
+                catch { }
+            }
+
+            public void Remove(int num)
+            {
+                if (num > Flowers || num > Leafs)
+                {
+                    throw new Exception("Bad");
+                }
+                else
+                {
+                    Flowers -= num;
+                    Leafs -= num;
+                    Console.WriteLine("Done.");
+                    Show();
+                }
+            }
+
+
+            public void Add(int num)
+            {
+                Flowers += num;
+                Leafs += num;
+                Console.WriteLine("Done. ");
+                Show();
+            }
+
+            public void Show()
+            {
+                Console.WriteLine("Flowers - " + Flowers + " Leafs - " + Leafs);
+            }
+
+        }
+
+        static void Main(string[] args)
+        {
+            //var Flex = new double[10] { 12, 4, 5, 6.3, 2, 4.5, 6, 8.16, 83.2, 10 };
+            //Sorting(Flex);
+
+            //SecondAttempt();
+            //CalculateThird();
+
+            Plant plant = new Plant(12, 10);
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Сколько листков хотите убрать/добавить?");
+                    int i = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("1. Remove 2. Add");
+                    int num = Int32.Parse(Console.ReadLine());
+                    switch (num)
+                    {
+                        case 1:
+                            plant.Remove(i);
+                            break;
+                        case 2:
+                            plant.Add(i);
+                            break;
+                        default:
+                            throw new Exception("Bad");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
